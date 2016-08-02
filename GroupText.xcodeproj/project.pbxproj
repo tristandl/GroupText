@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		6ACC11AF1D459D7F006D3B65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC11AE1D459D7F006D3B65 /* AppDelegate.swift */; };
-		6ACC11B11D459D7F006D3B65 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC11B01D459D7F006D3B65 /* ViewController.swift */; };
 		6ACC11B41D459D7F006D3B65 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ACC11B21D459D7F006D3B65 /* Main.storyboard */; };
 		6ACC11B61D459D80006D3B65 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ACC11B51D459D7F006D3B65 /* Assets.xcassets */; };
 		6ACC11B91D459D80006D3B65 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6ACC11B71D459D80006D3B65 /* LaunchScreen.storyboard */; };
 		6ACC11C41D459D80006D3B65 /* GroupTextTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC11C31D459D80006D3B65 /* GroupTextTests.swift */; };
+		6ACC11CF1D45A15F006D3B65 /* ContactGroupTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC11CE1D45A15F006D3B65 /* ContactGroupTableViewController.swift */; };
+		6ACC11D11D45F775006D3B65 /* ContactGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC11D01D45F775006D3B65 /* ContactGroup.swift */; };
+		6ACC11D51D462134006D3B65 /* ContactGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACC11D41D462134006D3B65 /* ContactGroupViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +30,6 @@
 /* Begin PBXFileReference section */
 		6ACC11AB1D459D7F006D3B65 /* GroupText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroupText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ACC11AE1D459D7F006D3B65 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6ACC11B01D459D7F006D3B65 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		6ACC11B31D459D7F006D3B65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6ACC11B51D459D7F006D3B65 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6ACC11B81D459D80006D3B65 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +37,9 @@
 		6ACC11BF1D459D80006D3B65 /* GroupTextTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GroupTextTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ACC11C31D459D80006D3B65 /* GroupTextTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupTextTests.swift; sourceTree = "<group>"; };
 		6ACC11C51D459D80006D3B65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6ACC11CE1D45A15F006D3B65 /* ContactGroupTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactGroupTableViewController.swift; sourceTree = "<group>"; };
+		6ACC11D01D45F775006D3B65 /* ContactGroup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactGroup.swift; sourceTree = "<group>"; };
+		6ACC11D41D462134006D3B65 /* ContactGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactGroupViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,11 +82,13 @@
 			isa = PBXGroup;
 			children = (
 				6ACC11AE1D459D7F006D3B65 /* AppDelegate.swift */,
-				6ACC11B01D459D7F006D3B65 /* ViewController.swift */,
-				6ACC11B21D459D7F006D3B65 /* Main.storyboard */,
 				6ACC11B51D459D7F006D3B65 /* Assets.xcassets */,
-				6ACC11B71D459D80006D3B65 /* LaunchScreen.storyboard */,
+				6ACC11D01D45F775006D3B65 /* ContactGroup.swift */,
+				6ACC11CE1D45A15F006D3B65 /* ContactGroupTableViewController.swift */,
+				6ACC11D41D462134006D3B65 /* ContactGroupViewController.swift */,
 				6ACC11BA1D459D80006D3B65 /* Info.plist */,
+				6ACC11B71D459D80006D3B65 /* LaunchScreen.storyboard */,
+				6ACC11B21D459D7F006D3B65 /* Main.storyboard */,
 			);
 			path = GroupText;
 			sourceTree = "<group>";
@@ -199,7 +205,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6ACC11B11D459D7F006D3B65 /* ViewController.swift in Sources */,
+				6ACC11CF1D45A15F006D3B65 /* ContactGroupTableViewController.swift in Sources */,
+				6ACC11D11D45F775006D3B65 /* ContactGroup.swift in Sources */,
+				6ACC11D51D462134006D3B65 /* ContactGroupViewController.swift in Sources */,
 				6ACC11AF1D459D7F006D3B65 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

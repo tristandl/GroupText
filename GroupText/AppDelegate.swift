@@ -7,15 +7,23 @@
 //
 
 import UIKit
+import Contacts
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
+    var contactStore = CNContactStore()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+//        requestAccess() { (accessGranted) -> Void in
+//            if (accessGranted) {
+//                self.retrieveContacts()
+//            }
+//        }
+        
         return true
     }
 
@@ -41,6 +49,67 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    // MARK: Helpers
+    class func getAppDelegate() -> AppDelegate {
+        return UIApplication.sharedApplication().delegate as! AppDelegate
+    }
+    
+    // Show an alert to the user, using the top-most viewcontroller to present from
+    func showMessage(message: String) {
+        let alertController = UIAlertController(title: "Group Message", message: message, preferredStyle: .Alert)
+        
+        let dismissAction = UIAlertAction(title: "OK", style: .Default) { (action) -> Void in
+        }
+        
+        alertController.addAction(dismissAction)
+        
+        let pushedViewControllers = (self.window?.rootViewController as! UINavigationController).viewControllers
+        let presentedViewController = pushedViewControllers[pushedViewControllers.count - 1]
+        
+        presentedViewController.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    func requestAccess(completionHandler: (accessGranted: Bool) -> Void) {
+        let authorisationStatus = CNContactStore.authorizationStatusForEntityType(.Contacts)
+        
+        switch authorisationStatus {
+        case .Authorized:
+            completionHandler(accessGranted: true)
+            
+        case .Denied, .NotDetermined:
+            self.contactStore.requestAccessForEntityType(.Contacts, completionHandler: { (access, accessError) -> Void in
+                if access {
+                    completionHandler(accessGranted: true)
+                }
+                else {
+                    if authorisationStatus == .Denied {
+                        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                            let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
+                            self.showMessage(message);
+                        }
+                    }
+                }
+            })
+            
+        default:
+            completionHandler(accessGranted: false)
+        }
+    }
+//    
+//    func retrieveContacts() {
+//        do {
+//            let groups = try contactStore.groupsMatchingPredicate(nil)
+//            let predicate = CNContact.predicateForContactsInGroupWithIdentifier(groups[0].identifier)
+//            
+//            let keysToFetch = [CNContactFormatter.descriptorForRequiredKeysForStyle(.FullName), CNContactEmailAddressesKey]
+//            
+//            let contacts = try contactStore.unifiedContactsMatchingPredicate(predicate, keysToFetch: keysToFetch)
+//            
+//            
+//        } catch {
+//            print(error)
+//        }
+//    }
 
 }
 
