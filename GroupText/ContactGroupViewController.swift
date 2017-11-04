@@ -34,7 +34,7 @@ class ContactGroupViewController: UIViewController, UITableViewDataSource, CNCon
         // Dispose of any resources that can be recreated.
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let name = nameTextField.text ?? ""
         
         if let contacts = contacts {
@@ -43,38 +43,38 @@ class ContactGroupViewController: UIViewController, UITableViewDataSource, CNCon
             print("Contact group not set")
         }
     }
-    @IBAction func selectContactsTapped(sender: UIButton) {
+    @IBAction func selectContactsTapped(_ sender: UIButton) {
         let contactPicker = CNContactPickerViewController()
         contactPicker.delegate = self
         contactPicker.predicateForEnablingContact = NSPredicate(format: "phoneNumbers.@count > 0")
-        self.presentViewController(contactPicker, animated: true, completion: nil)
+        self.present(contactPicker, animated: true, completion: nil)
     }
     
     // Uncomment the below to add support for presenting in a nav controller for editing
     // rather than adding
-    @IBAction func cancelTapped(sender: UIBarButtonItem) {
+    @IBAction func cancelTapped(_ sender: UIBarButtonItem) {
         let isPresentingInAddMode = presentingViewController is UINavigationController
         
         if isPresentingInAddMode {
-            dismissViewControllerAnimated(true, completion: nil)
+            dismiss(animated: true, completion: nil)
         }
         else {
-            navigationController!.popViewControllerAnimated(true)
+            navigationController!.popViewController(animated: true)
         }
     }
     
     // MARK: Table View Delegate
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contacts?.count ?? 0
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ContactDetailCell")!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactDetailCell")!
         
         guard let contact = contacts?[indexPath.row] else {
             return cell
@@ -84,19 +84,19 @@ class ContactGroupViewController: UIViewController, UITableViewDataSource, CNCon
             cell.imageView?.image = UIImage(data:contact.thumbnailImageData!)
         }
         
-        cell.textLabel?.text = CNContactFormatter.stringFromContact(contact, style: .FullName)
-        cell.detailTextLabel?.text = (contact.phoneNumbers[0].value as? CNPhoneNumber)?.stringValue
+        cell.textLabel?.text = CNContactFormatter.string(from: contact, style: .fullName)
+        cell.detailTextLabel?.text = contact.phoneNumbers[0].value.stringValue
         
         return cell
     }
     
     // MARK: Contact Picker Delegate
-    func contactPicker(picker: CNContactPickerViewController, didSelectContacts contacts: [CNContact]) {
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contacts: [CNContact]) {
         // Add the contacts list to the contacts groups array
         self.contacts = contacts
         
         // Reload the table in the main thread
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        DispatchQueue.main.async { () -> Void in
             // I don't think you need to use a weak self in here because this block won't hang around very long
             // compared to the lifecycle of the view controller
             self.tableView.reloadData()

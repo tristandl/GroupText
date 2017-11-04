@@ -17,7 +17,7 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
         
         // Load data from NSCoding if it exists
         if let savedContactGroups = loadContactGroups() {
@@ -30,10 +30,10 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
         // Dispose of any resources that can be recreated.
     }
     
-    func createNewMessage(recipients: [String]) {
+    func createNewMessage(_ recipients: [String]) {
         if !MFMessageComposeViewController.canSendText() {
-            let warningAlertController = UIAlertController(title: "Error", message: "Your device doesn't support SMS", preferredStyle: .Alert)
-            presentViewController(warningAlertController, animated: true, completion: nil)
+            let warningAlertController = UIAlertController(title: "Error", message: "Your device doesn't support SMS", preferredStyle: .alert)
+            present(warningAlertController, animated: true, completion: nil)
             return
         }
     
@@ -42,27 +42,27 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
         messageController.recipients = recipients
     
         // Present message view controller on screen
-        self.presentViewController(messageController, animated: true, completion: nil)
+        self.present(messageController, animated: true, completion: nil)
     }
     
     // MARK: Message Copose View Controller Delegate
     
-    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
-        controller.dismissViewControllerAnimated(true, completion: nil)
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contactGroups.count
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ContactGroupCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ContactGroupCell", for: indexPath)
 
         // Configure the cell...
         let contactGroup = contactGroups[indexPath.row]
@@ -74,26 +74,25 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
     
     // MARK: Table View Delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Create recipients array
         var recipients: [String] = []
         
         let contactGroup = contactGroups[indexPath.row]
         
         for contact in contactGroup.contacts {
-            if let phoneNumber = ((contact.phoneNumbers[0].value as? CNPhoneNumber)?.stringValue) {
-                recipients.append(phoneNumber)
-            }
-        }
+            let phoneNumber = contact.phoneNumbers[0].value.stringValue
+			recipients.append(phoneNumber)
+		}
         
         createNewMessage(recipients)
     }
     
-    override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let contactGroup = contactGroups[indexPath.row]
         
         // Show the detail view controller
-        let contactGroupViewController = self.storyboard?.instantiateViewControllerWithIdentifier("ContactGroupDetail") as! ContactGroupViewController
+        let contactGroupViewController = self.storyboard?.instantiateViewController(withIdentifier: "ContactGroupDetail") as! ContactGroupViewController
         contactGroupViewController.contactGroup = contactGroup
 
         self.navigationController?.pushViewController(contactGroupViewController, animated: true)
@@ -147,17 +146,17 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
     
     // MARK: Actions
 
-    @IBAction func unwindToContactGroups(sender: UIStoryboardSegue) {
-        if let sourceViewController = sender.sourceViewController as? ContactGroupViewController, contactGroup = sourceViewController.contactGroup {
+    @IBAction func unwindToContactGroups(_ sender: UIStoryboardSegue) {
+        if let sourceViewController = sender.source as? ContactGroupViewController, let contactGroup = sourceViewController.contactGroup {
             if let selectedIndexPath = tableView.indexPathForSelectedRow {
                 contactGroups[selectedIndexPath.row] = contactGroup
-                tableView.reloadRowsAtIndexPaths([selectedIndexPath], withRowAnimation: .None)
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
             }
             else {
                 // Add a new contact group
-                let newIndexPath = NSIndexPath(forRow: contactGroups.count, inSection: 0)
+                let newIndexPath = IndexPath(row: contactGroups.count, section: 0)
                 contactGroups.append(contactGroup)
-                tableView.insertRowsAtIndexPaths([newIndexPath], withRowAnimation: .Bottom)
+                tableView.insertRows(at: [newIndexPath], with: .bottom)
             }
             
             // Save the contact groups
@@ -168,7 +167,7 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
     // MARK: NSCoding
     
     func saveContactGroups() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(contactGroups, toFile: ContactGroup.ArchiveURL.path!)
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(contactGroups, toFile: ContactGroup.ArchiveURL.path)
         
         if !isSuccessfulSave {
             print("Failed to save contact groups")
@@ -176,7 +175,7 @@ class ContactGroupTableViewController: UITableViewController, CNContactPickerDel
     }
     
     func loadContactGroups() -> [ContactGroup]? {
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(ContactGroup.ArchiveURL.path!) as? [ContactGroup]
+        return NSKeyedUnarchiver.unarchiveObject(withFile: ContactGroup.ArchiveURL.path) as? [ContactGroup]
     }
     
 

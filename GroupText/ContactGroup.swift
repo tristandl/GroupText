@@ -24,8 +24,8 @@ class ContactGroup: NSObject, NSCoding {
     
     // MARK: Archiving Paths
     
-    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("contactGroups")
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("contactGroups")
     
     // MARK: Initialisers
     
@@ -35,17 +35,17 @@ class ContactGroup: NSObject, NSCoding {
     }
     
     convenience required init?(coder aDecoder: NSCoder) {
-        let name = aDecoder.decodeObjectForKey(PropertyKey.nameKey) as! String
-        let contacts = aDecoder.decodeObjectForKey(PropertyKey.contactsKey) as! [CNContact]
+        let name = aDecoder.decodeObject(forKey: PropertyKey.nameKey) as! String
+        let contacts = aDecoder.decodeObject(forKey: PropertyKey.contactsKey) as! [CNContact]
         
         self.init(name: name, withContacts: contacts)
     }
     
     // MARK: NSCoding
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(name, forKey: PropertyKey.nameKey)
-        aCoder.encodeObject(contacts, forKey: PropertyKey.contactsKey)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(name, forKey: PropertyKey.nameKey)
+        aCoder.encode(contacts, forKey: PropertyKey.contactsKey)
     }
     
 }
