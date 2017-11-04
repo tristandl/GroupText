@@ -29,7 +29,7 @@ class ContactGroup: NSObject, NSCoding {
     
     // MARK: Initialisers
     
-    @objc init(name: String, withContacts contacts: [CNContact]) {
+	init(name: String, withContacts contacts: [CNContact]) {
         self.name = name
         self.contacts = contacts
     }
